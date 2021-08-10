@@ -17,7 +17,7 @@
 
 		$today_deaths = $api_data['deaths'] - $total;
 
-		if($today_deaths < 0)
+		if($today_deaths < 1)
 			die();
 
 		array_push($json_data, array(
