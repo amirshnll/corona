@@ -76,7 +76,7 @@
 					document.getElementById('death').innerHTML += Num2persian(diffDays) + ' روز پیش ';
 				}
 
-				document.getElementById('death').innerHTML += data[i][0] + ' نفر را کرونا کُشت.<br />';
+				document.getElementById('death').innerHTML += `<b><span style='color: red;'>${data[i][0]}</span></b>` + ' نفر را کرونا کُشت.<br />';
 			}
 			document.getElementById('totaldeath').innerHTML = total; 
 		}
