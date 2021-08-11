@@ -3,16 +3,20 @@
 <head>
 	<meta charset="utf-8">
 	<title>به فکر خودتان باشید...</title>
-	<style>@font-face{font-family:dana;font-style:normal;font-weight:400;src:url(dana-fanum-regular.woff2)}body{font-family:dana;direction:rtl;font-size:23px;line-height:50px;background:#000;color:#fff;padding:0;margin:0}.text-center{text-align:center}.line{background:#fff;height:2px;width:100%;margin:50px 0 20px}</style>
+	<style>@font-face{font-family:dana;font-style:normal;font-weight:400;src:url(dana-fanum-regular.woff2)}body{font-family:dana;direction:rtl;font-size:23px;line-height:50px;background:#000;color:#fff;padding:0;margin:0}.text-center{text-align:center}.line{background:#fff;height:2px;width:100%;margin:50px 0 20px}.chart{max-width: 978px;margin: 0 auto; margin-bottom: 50px;}</style>
 </head>
 <body>
 	<div class="text-center">
 		<h1>به فکر خودتان باشید...</h1>
+		<div class="chart">
+			<canvas id="deathsChart"></canvas>
+		</div>
 		<div id="death"></div>
 		<h3>تا امروز  کرونا <span id="totaldeath"></span> نفر را  در ایران کُشت.</h3>
 	</div>
 
 	<script src="num2persian.js"></script>
+	<script src="chart.js"></script>
 	<script>
 		var total = 0;
 		var date = new Date();
@@ -55,10 +59,69 @@
 			document.getElementById('totaldeath').innerHTML = total; 
 		}
 
+		function createLineChartFromData(DeathsData) {
+			var topDeathsData = DeathsData.slice(DeathsData.length-14, DeathsData.length);
+
+			const deathsLabels = topDeathsData.map(function(arr){
+				console.log(new Date(arr[1]).toLocaleDateString('fa-IR', { month: 'long', day: 'numeric' }));
+				return new Date(arr[1]).toLocaleDateString('fa-IR', { day: 'numeric', month: 'long' });
+			})
+			const deathsData = topDeathsData.map(function(arr){
+				return arr[0];
+			})
+			const data = {
+				labels: deathsLabels,
+				datasets: [{
+					label: 'کشته‌شدگان',
+					backgroundColor: 'black',
+					borderColor: 'red',
+					data: deathsData,
+				}]
+			};	
+			const config = {
+				type: 'line',
+				data,
+				options: {
+					responsive: true,
+					tooltips: {
+						rtl: true
+					},
+					plugins: {
+						legend: {
+							display: false
+						},
+						title: {
+							display: true,
+							text: 'نمودار کشته‌شدگان ۲ هفته گذشته'
+						},
+					},
+					scales: {
+						x: {
+							grid: {
+								color: "#242424"
+							}
+						},
+						y: {
+							grid: {
+								color: "#242424"
+							}
+						}
+					}
+				}
+			};
+			Chart.defaults.font.size = 14;
+			Chart.defaults.font.family = 'dana';
+			var myChart = new Chart(
+			  document.getElementById('deathsChart'),
+			  config
+			);
+		}
+
 		// read data from data.json 
 		readTextFile("data.json", function(text){
 			data = JSON.parse(text);
 			writeDataToDOM(data);
+			createLineChartFromData(data);
 		});	
 	</script>
 </body>
