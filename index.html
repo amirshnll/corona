@@ -3,17 +3,30 @@
 <head>
 	<meta charset="utf-8">
 	<title>به فکر خودتان باشید...</title>
-	<style>@font-face{font-family:dana;font-style:normal;font-weight:400;src:url(dana-fanum-regular.woff2)}body{font-family:dana;direction:rtl;font-size:23px;line-height:50px;background:#000;color:#fff;padding:0;margin:0}.text-center{text-align:center}.line{background:#fff;height:2px;width:100%;margin:50px 0 20px}</style>
+	<style>@font-face{font-family:dana;font-style:normal;font-weight:400;src:url(dana-fanum-regular.woff2)}body{font-family:dana;direction:rtl;font-size:23px;line-height:50px;background:#000;color:#fff;padding:0;margin:0}.text-center{text-align:center}.line{background:#fff;height:2px;width:100%;margin:50px 0 20px}.chart{max-width: 978px;margin: 0 auto; margin-bottom: 50px;}.alert{font-size: 14px;}</style>
 </head>
 <body>
 	<div class="text-center">
 		<h1>به فکر خودتان باشید...</h1>
+		<div class="chart">
+			<canvas id="deathsChart"></canvas>
+		</div>
 		<div id="death"></div>
 		<h3>تا امروز  کرونا <span id="totaldeath"></span> نفر را  در ایران کُشت.</h3>
+		<hr>
+		<p class="alert">آمار این وبسایت، براساس اطلاعات جمهوری اسلامی ایران آپدیت میشود و ممکن است با آنچه در واقعیت رخ میدهد <span style="color: red;">متفاوت</span> باشد.</p>
+		<p class="alert">برای مشاهده کد وبسایت، به <a href="https://github.com/amirshnll/corona" target="_blank" style="color: white;">GitHub</a> ما مراجعه کنید.</p>
 	</div>
 
 	<script src="num2persian.js"></script>
+	<script src="chart.js"></script>
 	<script>
+		var total = 0;
+		var date = new Date();
+		var today = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
+		let yesterday = new Date(new Date().setDate(new Date().getDate()-1));
+		var yesterday_date = (yesterday.getMonth()+1)+'/'+yesterday.getDate()+'/'+yesterday.getFullYear();
+
 		function readTextFile(file, callback) {
 		    var rawFile = new XMLHttpRequest();
 		    rawFile.overrideMimeType("application/json");
@@ -25,38 +38,95 @@
 		    }
 		    rawFile.send(null);
 		}
-		
-		var total = 0;
-		var date = new Date();
-		var today = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
-		let yesterday = new Date(new Date().setDate(new Date().getDate()-1));
-		var yesterday_date = (yesterday.getMonth()+1)+'/'+yesterday.getDate()+'/'+yesterday.getFullYear();
 
-		readTextFile("data.json", function(text){
-		    var data = JSON.parse(text);
-		    
-		    for (var i = data.length - 1; i >= 0; i--) {
-		    	total += parseInt(data[i][0]);
+		function writeDataToDOM(data) {
+			for (var i = data.length - 1; i >= 0; i--) {
+				total += parseInt(data[i][0]);
 
-		    	if(data[i][1] == today)
-		    		document.getElementById('death').innerHTML += 'امروز ';
-		    	else if(data[i][1] == yesterday_date)
-		    		document.getElementById('death').innerHTML += 'دیروز ';
-		    	else {
+				if(data[i][1] == today)
+					document.getElementById('death').innerHTML += 'امروز ';
+				else if(data[i][1] == yesterday_date)
+					document.getElementById('death').innerHTML += 'دیروز ';
+				else {
 
-		    		var date1 = new Date(data[i][1]);
+					var date1 = new Date(data[i][1]);
 					var date2 = new Date(today);
 					var diffTime = Math.abs(date2 - date1);
 					var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 					
 					document.getElementById('death').innerHTML += Num2persian(diffDays) + ' روز پیش ';
-		    	}
+				}
 
-		    	document.getElementById('death').innerHTML += data[i][0] + ' نفر را کرونا کُشت.<br />';
-		    }
-		   	
-		   	document.getElementById('totaldeath').innerHTML = total; 
-		});
+				document.getElementById('death').innerHTML += data[i][0] + ' نفر را کرونا کُشت.<br />';
+			}
+			document.getElementById('totaldeath').innerHTML = total; 
+		}
+
+		function createLineChartFromData(DeathsData) {
+			var topDeathsData = DeathsData.slice(DeathsData.length-14, DeathsData.length);
+
+			const deathsLabels = topDeathsData.map(function(arr){
+				let month = new Date(arr[1]).toLocaleDateString('fa-IR', { month: 'long' });
+				let day = new Date(arr[1]).toLocaleDateString('fa-IR', { day: 'numeric' });
+				return `${day} ${month}`;
+			})
+			const deathsData = topDeathsData.map(function(arr){
+				return arr[0];
+			})
+			const data = {
+				labels: deathsLabels,
+				datasets: [{
+					label: 'کشته‌شدگان',
+					backgroundColor: 'black',
+					borderColor: 'red',
+					data: deathsData,
+				}]
+			};	
+			const config = {
+				type: 'line',
+				data,
+				options: {
+					responsive: true,
+					tooltips: {
+						rtl: true
+					},
+					plugins: {
+						legend: {
+							display: false
+						},
+						title: {
+							display: true,
+							text: 'نمودار کشته‌شدگان ۲ هفته گذشته'
+						},
+					},
+					scales: {
+						x: {
+							grid: {
+								color: "#242424"
+							}
+						},
+						y: {
+							grid: {
+								color: "#242424"
+							}
+						}
+					}
+				}
+			};
+			Chart.defaults.font.size = 14;
+			Chart.defaults.font.family = 'dana';
+			var myChart = new Chart(
+			  document.getElementById('deathsChart'),
+			  config
+			);
+		}
+
+		// read data from data.json 
+		readTextFile("data.json", function(text){
+			data = JSON.parse(text);
+			writeDataToDOM(data);
+			createLineChartFromData(data);
+		});	
 	</script>
 </body>
 </html>
