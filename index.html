@@ -82,7 +82,7 @@
 		}
 
 		function createLineChartFromData(DeathsData) {
-			var topDeathsData = DeathsData.slice(DeathsData.length-14, DeathsData.length);
+			var topDeathsData = DeathsData.slice(DeathsData.length-30, DeathsData.length);
 
 			const deathsLabels = topDeathsData.map(function(arr){
 				let month = new Date(arr[1]).toLocaleDateString('fa-IR', { month: 'long' });
@@ -103,7 +103,7 @@
 			};	
 
 			const totalDuration = 3000;
-			const delayBetweenPoints = totalDuration / 14;
+			const delayBetweenPoints = totalDuration / 30;
 			const previousY = (ctx) => ctx.index === 0 ? ctx.chart.scales.y.getPixelForValue(100) : ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y;
 			const animation = {
 			x: {
@@ -149,7 +149,7 @@
 						},
 						title: {
 							display: true,
-							text: 'نمودار کشته‌شدگان ۲ هفته گذشته در جمهوری اسلامی ایران'
+							text: 'نمودار تعداد کشته‌شدگان کرونا داخل جمهوری اسلامی ایران در یک ماه گذشته'
 						},
 					},
 					scales: {
