@@ -1,11 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html dir="rtl" lang="fa">
 <head>
-	<meta charset="utf-8">
+	<!-- Standard meta tags -->
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport" />
+	<meta name="theme-color" content="#000000" />
+	<meta name="description" content="آماری تکان‌دهنده از هم‌وطنانی که به‌خاطر کرونا، کشته شده‌اند ..." />
+
+	<!-- OpenGraph meta tags -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://amirshnll.github.io/corona/" />
+	<meta property="og:site_name" content="CoronaInIran" />
+	<meta property="og:title" content="به فکر خودتان باشید" />
+	<meta property="og:description" content="آماری تکان‌دهنده از هم‌وطنانی که به‌خاطر کرونا، کشته شده‌اند ..." />
+	<meta property="og:locale" content="fa_IR" />
+
+	<!-- Twitter cards meta tags -->
+	<meta name="twitter:creator" content="@amirshnll" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="به فکر خودتان باشید" />
+	<meta name="twitter:description" content="آماری تکان‌دهنده از هم‌وطنانی که به‌خاطر کرونا، کشته شده‌اند ..." />
+	
 	<title>به فکر خودتان باشید...</title>
 	<style>@font-face{font-family:dana;font-style:normal;font-weight:400;src:url(dana-fanum-regular.woff2)}body{font-family:dana;direction:rtl;font-size:23px;line-height:50px;background:#000;color:#fff;padding:0;margin:0}.text-center{text-align:center}.line{background:#fff;height:2px;width:100%;margin:50px 0 20px}.chart{max-width: 978px;margin: 0 auto; margin-bottom: 50px;}.alert{font-size: 14px;}</style>
 </head>
-<body>
+<body onLoad="main()">
 	<div class="text-center">
 		<h1>به فکر خودتان باشید...</h1>
 		<div class="chart">
@@ -121,12 +140,14 @@
 			);
 		}
 
-		// read data from data.json 
-		readTextFile("data.json", function(text){
-			data = JSON.parse(text);
-			writeDataToDOM(data);
-			createLineChartFromData(data);
-		});	
+		function main() {
+			// read data from data.json 
+			readTextFile("data.json", function(text){
+				data = JSON.parse(text);
+				writeDataToDOM(data);
+				createLineChartFromData(data);
+			});	
+		}
 	</script>
 </body>
 </html>
