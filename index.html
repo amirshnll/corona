@@ -63,8 +63,9 @@
 			var topDeathsData = DeathsData.slice(DeathsData.length-14, DeathsData.length);
 
 			const deathsLabels = topDeathsData.map(function(arr){
-				console.log(new Date(arr[1]).toLocaleDateString('fa-IR', { month: 'long', day: 'numeric' }));
-				return new Date(arr[1]).toLocaleDateString('fa-IR', { day: 'numeric', month: 'long' });
+				let month = new Date(arr[1]).toLocaleDateString('fa-IR', { month: 'long' });
+				let day = new Date(arr[1]).toLocaleDateString('fa-IR', { day: 'numeric' });
+				return `${day} ${month}`;
 			})
 			const deathsData = topDeathsData.map(function(arr){
 				return arr[0];
