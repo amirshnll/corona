@@ -98,7 +98,7 @@
 				let day = new Date(arr[1]).toLocaleDateString('fa-IR', { day: 'numeric' });
 				return `${day} ${month}`;
 			})
-			const deathsData = topDeathsData.map(function(arr){
+			const deathsNumber = topDeathsData.map(function(arr){
 				return arr[0];
 			})
 			const data = {
@@ -107,7 +107,7 @@
 					label: 'کشته‌شدگان',
 					backgroundColor: '#fff',
 					borderColor: '#8A0303',
-					data: deathsData,
+					data: deathsNumber,
 				}]
 			};	
 
