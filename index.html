@@ -85,7 +85,8 @@
 
 				document.getElementById('death').innerHTML += `<b><span style='color: red;'>${data[i][0]}</span></b>` + ' نفر را کرونا کُشت.<br />';
 			}
-			document.getElementById('totaldeath').innerHTML = total; 
+			let totalDeaths = new Intl.NumberFormat('en-IN').format(total);
+			document.getElementById('totaldeath').innerHTML = `<b><span style='color: red;'>${totalDeaths}</span></b>`; 
 		}
 
 		function createLineChartFromData(DeathsData) {
