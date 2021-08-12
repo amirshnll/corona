@@ -38,7 +38,7 @@
 			<canvas id="deathsChart"></canvas>
 		</div>
 		<div id="death"></div>
-		<h3>تا امروز  کرونا <span id="totaldeath"></span> نفر را  در ایران کُشت.</h3>
+		<h3 id="totaldeathselement">در حال بارگزاری اطلاعات&nbsp&nbsp&nbsp<img src="/loading.gif" width="20"></h3>
 		<hr>
 		<p class="alert">آمار این صفحه، براساس اطلاعات داخلی است و ممکن است با آنچه در واقعیت رخ میدهد <span style="color: red;">متفاوت</span> باشد.</p>
 		<p class="alert">برای مشاهده کد وبسایت، به <a href="https://github.com/amirshnll/corona" target="_blank" style="color: white;">GitHub</a> ما مراجعه کنید.</p>
@@ -86,7 +86,7 @@
 				document.getElementById('death').innerHTML += `<b><span style='color: red;'>${data[i][0]}</span></b>` + ' نفر را کرونا کُشت.<br />';
 			}
 			let totalDeaths = new Intl.NumberFormat('en-IN').format(total);
-			document.getElementById('totaldeath').innerHTML = `<b><span style='color: red;'>${totalDeaths}</span></b>`; 
+			document.getElementById('totaldeathselement').innerHTML = `تا امروز  کرونا <b><span style='color: red;'>${totalDeaths}</span></b> نفر را  در ایران کُشت.`; 
 		}
 
 		function createLineChartFromData(DeathsData) {
