@@ -17,3 +17,10 @@ https://github.com/disease-sh/api
 https://github.com/chartjs/Chart.js/
 
 <p dir="rtl">هدف از این پروژه این بود که کمی نگران کرونا باشیم و اون رو بیشتر از قبل جدی بگیریم؛ امیدوارم در روزهای آینده این اعداد که هر کدام یکی از عزیزان ما هستند کمتر شوند.</p>
+
+
+<br />
+
+### Related Repository :
+- [covid online detector](https://github.com/amirshnll/coronavirus)
+- [covid detector + java](https://github.com/amirshnll/Coronavirus-simple-detection)
