@@ -29,11 +29,12 @@
     <meta name="twitter:image:alt" content="آماری تکان‌دهنده از هم‌وطنانی که به‌خاطر کرونا، کشته شده‌اند ..." />	
 	
 	<title>به فکر خودتان باشید...</title>
-	<style>@font-face{font-family:dana;font-style:normal;font-weight:400;src:url(dana-fanum-regular.woff2)}body{font-family:dana;direction:rtl;font-size:23px;line-height:50px;background:#000;color:#fff;padding:0;margin:0}.text-center{text-align:center}.line{background:#fff;height:2px;width:100%;margin:50px 0 20px}.chart{max-width: 978px;margin: 0 auto; margin-bottom: 50px;}.alert{font-size: 14px;}</style>
+	<style>@font-face{font-family:dana;font-style:normal;font-weight:400;src:url(dana-fanum-regular.woff2)}body{font-family:dana;direction:rtl;font-size:23px;line-height:50px;background:#000;color:#fff;padding:0;margin:0}.text-center{text-align:center}.line{background:#fff;height:2px;width:100%;margin:50px 0 20px}.chart{max-width:978px;margin:0 auto;margin-bottom:50px}.alert{font-size:14px}.twitter-share{text-decoration:none;color:#fff;padding:5px;border-radius:5px;font-size:14px;background:#1DA1F2}.twitter-share img{margin-left:10px;box-sizing:border-box}.twitter-share p{display:inline}.twitter-share p:nth-child(1){position:relative;top:7px}</style>
 </head>
 <body onLoad="main()">
 	<div class="text-center">
 		<h1>به فکر خودتان باشید...</h1>
+		<a id="twitterlink" href="" target="_blank" title="اشتراک در توییتر" rel="nofollow" class="twitter-share"><p><img src="twitter-min.png" title="اشتراک در توییتر" alt="اشتراک در توییتر" /></p><p>توییت کنید.</p></a>
 		<div class="chart">
 			<canvas id="deathsChart"></canvas>
 		</div>
@@ -69,12 +70,21 @@
 			for (var i = data.length - 1; i >= 0; i--) {
 				total += parseInt(data[i][0]);
 
+				if(i == data.length - 1) {
+					var twitterlinkhref = "https://twitter.com/intent/tweet?text=متاسفانه ";
+					if(data[i][1] == today)
+						twitterlinkhref = twitterlinkhref + 'امروز ';
+					else if(data[i][1] == yesterday_date)
+						twitterlinkhref = twitterlinkhref + 'دیروز ';
+					twitterlinkhref = twitterlinkhref + data[i][0] + " نفر بر اثر کرونا فوت شدند    amirshnll.github.io/corona"
+					document.getElementById("twitterlink").href = twitterlinkhref;
+				}
+
 				if(data[i][1] == today)
 					document.getElementById('death').innerHTML += 'امروز ';
 				else if(data[i][1] == yesterday_date)
 					document.getElementById('death').innerHTML += 'دیروز ';
 				else {
-
 					var date1 = new Date(data[i][1]);
 					var date2 = new Date(today);
 					var diffTime = Math.abs(date2 - date1);
@@ -185,7 +195,7 @@
 
 		function main() {
 			// read data from data.json 
-			readTextFile("data.json", function(text){
+			readTextFile("https://raw.githubusercontent.com/amirshnll/corona/main/data.json", function(text){
 				data = JSON.parse(text);
 				writeDataToDOM(data);
 				createLineChartFromData(data);
