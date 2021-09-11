@@ -195,7 +195,7 @@
 
 		function main() {
 			// read data from data.json 
-			readTextFile("https://raw.githubusercontent.com/amirshnll/corona/main/data.json", function(text){
+			readTextFile("data.json", function(text){
 				data = JSON.parse(text);
 				writeDataToDOM(data);
 				createLineChartFromData(data);
