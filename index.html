@@ -100,7 +100,7 @@
 		}
 
 		function createLineChartFromData(DeathsData) {
-			let numberOfDaysPassed = 30;
+			let numberOfDaysPassed = 60;
 			var topDeathsData = DeathsData.slice((DeathsData.length-numberOfDaysPassed), DeathsData.length);
 
 			const deathsLabels = topDeathsData.map(function(arr){
